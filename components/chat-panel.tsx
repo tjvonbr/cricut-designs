@@ -34,26 +34,26 @@ export function ChatPanel({
   const { submitUserMessage } = useActions()
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
 
-  const exampleMessages = [
+  const popularQueries = [
     {
-      heading: 'What are the',
-      subheading: 'trending memecoins today?',
-      message: `What are the trending memecoins today?`
+      heading: 'Potty training',
+      subheading: 'How can I potty train my dog?',
+      message: `How can I potty train my dog?`
     },
     {
-      heading: 'What is the price of',
-      subheading: '$DOGE right now?',
-      message: 'What is the price of $DOGE right now?'
+      heading: 'Leash training',
+      subheading: 'How can I stop my dog from pulling on the leash?',
+      message: 'How can I stop my dog from pulling on the leash?'
     },
     {
-      heading: 'I would like to buy',
-      subheading: '42 $DOGE',
-      message: `I would like to buy 42 $DOGE`
+      heading: 'Crate training',
+      subheading: 'How do I get my puppy to like its kennel?',
+      message: 'How do I get my puppy to like its kennel?'
     },
     {
-      heading: 'What are some',
-      subheading: `recent events about $DOGE?`,
-      message: `What are some recent events about $DOGE?`
+      heading: 'Barking',
+      subheading: 'My dog barks at everything!  What can I do?',
+      message: `My dog barks at everything!  What can I do?`
     }
   ]
 
@@ -67,7 +67,7 @@ export function ChatPanel({
       <div className="mx-auto sm:max-w-2xl sm:px-4">
         <div className="mb-4 grid grid-cols-2 gap-2 px-4 sm:px-0">
           {messages.length === 0 &&
-            exampleMessages.map((example, index) => (
+            popularQueries.map((example, index) => (
               <div
                 key={example.heading}
                 className={`cursor-pointer rounded-lg border bg-white p-4 hover:bg-zinc-50 dark:bg-zinc-950 dark:hover:bg-zinc-900 ${
