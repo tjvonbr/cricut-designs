@@ -6,10 +6,6 @@ import { Session } from '@/lib/types'
 import { getMissingKeys } from '@/app/actions'
 import { redirect } from 'next/navigation'
 
-export const metadata = {
-  title: 'Dog Whisperer AI'
-}
-
 export default async function IndexPage() {
   const id = nanoid()
   const session = (await auth()) as Session
