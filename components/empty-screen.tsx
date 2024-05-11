@@ -1,21 +1,18 @@
-import { UseChatHelpers } from 'ai/react'
-
-import { Button } from '@/components/ui/button'
-import { ExternalLink } from '@/components/external-link'
-import { IconArrowRight } from '@/components/ui/icons'
-
 export function EmptyScreen() {
   return (
     <div className="mx-auto max-w-2xl px-4">
       <div className="flex flex-col gap-2 rounded-lg border bg-background p-8">
-        <h1 className="text-lg font-semibold">Welcome to Dog Whisperer AI!</h1>
+        <h1 className="text-lg font-semibold">Welcome to Cricut Designs!</h1>
         <p className="leading-normal text-muted-foreground">
-          Meet Zoe, your AI dog training assistant designed to help you train
-          your dog with a modern, force-free approach.
+          Dive into a world of creativity with endless possibilities at your
+          fingertips. Whether you&apos;re a crafting novice or an expert DIYer,
+          our app, powered by OpenAI&apos;s Dall-E, helps you bring your unique
+          visions to life. Explore a treasure trove of inspiring images,
+          tailor-made for your Cricut projects. Start creating personalized
+          gifts, home decor, and much more—just a tap away. Happy crafting!
         </p>
-        <p className="leading-normal text-muted-foreground">
-          To get started, pick one of our trending questions below or ask Zoe a
-          question! Happy training!
+        <p className="leading-normal text-muted-foreground font-semibold">
+          Happy crafting!
         </p>
       </div>
     </div>

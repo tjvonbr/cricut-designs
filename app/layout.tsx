@@ -6,17 +6,16 @@ import { cn } from '@/lib/utils'
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import { Toaster } from '@/components/ui/sonner'
-import { usePathname } from 'next/navigation'
 
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
     ? new URL(`https://${process.env.VERCEL_URL}`)
     : undefined,
   title: {
-    default: 'Dog Whisperer AI',
-    template: `Dog Whisperer AI - %s`
+    default: 'Cricut Designs',
+    template: `Cricut Designs - %s`
   },
-  description: 'An AI-powered dog training assistant.',
+  description: 'An AI-powered Cricut SVG image generator',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',

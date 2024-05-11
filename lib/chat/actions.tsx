@@ -8,7 +8,7 @@ import {
   streamUI,
   createStreamableValue
 } from 'ai/rsc'
-import { anthropic } from '@ai-sdk/anthropic'
+import { openai } from '@ai-sdk/openai'
 import {
   spinner,
   BotCard,
@@ -29,6 +29,28 @@ import { saveChat } from '@/app/actions'
 import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
 import { Chat } from '@/lib/types'
 import { auth } from '@/auth'
+const DALL_E = 'https://api.openai.com/v1/images/generations'
+
+async function submitImagePrompt(prompt: string) {
+  'use server'
+
+  const response = await fetch(DALL_E, {
+    method: 'POST',
+    headers: {
+      Authorization: (`Bearer ` + process.env.OPENAI_API_KEY) as string,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      prompt,
+      n: 1,
+      size: '1024x1024',
+      response_format: 'b64_json'
+    })
+  })
+
+  const json = await response.json()
+  console.log(json)
+}
 
 async function confirmPurchase(symbol: string, price: number, amount: number) {
   'use server'
@@ -132,7 +154,7 @@ async function submitUserMessage(content: string) {
   let textNode: undefined | React.ReactNode
 
   const result = await streamUI({
-    model: anthropic('claude-2.0'),
+    model: openai('dall-e-2'),
     initial: <SpinnerMessage />,
     system:
       'You are a world-class dog training conversation bot and you can help users train their dogs and solve undesired behaviors, step by step.  Your responses should be overly positive and encouraging.',
@@ -195,6 +217,7 @@ export type UIState = {
 
 export const AI = createAI<AIState, UIState>({
   actions: {
+    submitImagePrompt,
     submitUserMessage,
     confirmPurchase
   },
