@@ -14,7 +14,7 @@ export const metadata = {
     : undefined,
   title: {
     default: 'Dog Whisperer AI',
-    template: `%s - Dog Whisperer AI`
+    template: `Dog Whisperer AI - %s`
   },
   description: 'An AI-powered dog training assistant.',
   icons: {
