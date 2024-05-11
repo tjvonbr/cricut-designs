@@ -30,7 +30,7 @@ export function ChatList({ messages, session, isShared }: ChatList) {
                   log in
                 </Link>{' '}
                 or{' '}
-                <Link href="/signup" className="underline">
+                <Link href="/sign-up" className="underline">
                   sign up
                 </Link>{' '}
                 to save and revisit your chat history!
