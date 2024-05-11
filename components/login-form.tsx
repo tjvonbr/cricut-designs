@@ -1,16 +1,33 @@
 'use client'
 
 import { useFormState, useFormStatus } from 'react-dom'
-import { authenticate } from '@/app/login/actions'
-import Link from 'next/link'
-import { useEffect } from 'react'
+import { authenticate } from '@/app/sign-in/actions'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { IconSpinner } from './ui/icons'
-import { getMessageFromCode } from '@/lib/utils'
+import { cn, getMessageFromCode } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
+import { Label } from './ui/label'
+import { Input } from './ui/input'
+import { buttonVariants } from './ui/button'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { userAuthSchema } from '@/lib/validations/auth'
+import { z } from 'zod'
 
-export default function LoginForm() {
+interface LoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+type FormData = z.infer<typeof userAuthSchema>
+
+export default function LoginForm({ className, ...props }: LoginFormProps) {
+  const {
+    register,
+    formState: { errors }
+  } = useForm<FormData>({
+    resolver: zodResolver(userAuthSchema)
+  })
   const router = useRouter()
+
   const [result, dispatch] = useFormState(authenticate, undefined)
 
   useEffect(() => {
@@ -25,73 +42,57 @@ export default function LoginForm() {
   }, [result, router])
 
   return (
-    <form
-      action={dispatch}
-      className="flex flex-col items-center gap-4 space-y-3"
-    >
-      <div className="w-full flex-1 rounded-lg border bg-white px-6 pb-4 pt-8 shadow-md  md:w-96 dark:bg-zinc-950">
-        <h1 className="mb-3 text-2xl font-bold">Please log in to continue.</h1>
-        <div className="w-full">
-          <div>
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-zinc-400"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+    <div className={cn('grid gap-6', className)} {...props}>
+      <form action={dispatch}>
+        <div className="grid gap-4">
+          <div className="grid gap-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
                 id="email"
+                placeholder="name@example.com"
                 type="email"
-                name="email"
-                placeholder="Enter your email address"
-                required
+                autoCapitalize="none"
+                autoComplete="email"
+                autoCorrect="off"
+                {...register('email')}
               />
+              {errors?.email && (
+                <p className="px-1 text-xs text-red-600">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
-          </div>
-          <div className="mt-4">
-            <label
-              className="mb-3 mt-5 block text-xs font-medium text-zinc-400"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                className="peer block w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+            <div>
+              <Label htmlFor="email">Password</Label>
+              <Input
                 id="password"
                 type="password"
-                name="password"
-                placeholder="Enter password"
-                required
-                minLength={6}
+                autoCapitalize="none"
+                autoComplete="password"
+                autoCorrect="off"
+                {...register('password')}
               />
+              {errors?.password && (
+                <p className="px-1 text-xs text-red-600">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
           </div>
+          <button className={cn(buttonVariants())}>Sign In</button>
         </div>
-        <LoginButton />
+      </form>
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+            Or continue with
+          </span>
+        </div>
       </div>
-
-      <Link
-        href="/signup"
-        className="flex flex-row gap-1 text-sm text-zinc-400"
-      >
-        No account yet? <div className="font-semibold underline">Sign up</div>
-      </Link>
-    </form>
-  )
-}
-
-function LoginButton() {
-  const { pending } = useFormStatus()
-
-  return (
-    <button
-      className="my-4 flex h-10 w-full flex-row items-center justify-center rounded-md bg-zinc-900 p-2 text-sm font-semibold text-zinc-100 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-      aria-disabled={pending}
-    >
-      {pending ? <IconSpinner /> : 'Log in'}
-    </button>
+    </div>
   )
 }
