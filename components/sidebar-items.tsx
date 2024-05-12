@@ -1,35 +1,35 @@
 'use client'
 
-import { Chat } from '@/lib/types'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { removeChat, shareChat } from '@/app/actions'
 
 import { SidebarActions } from '@/components/sidebar-actions'
 import { SidebarItem } from '@/components/sidebar-item'
+import { Image } from '@prisma/client'
 
 interface SidebarItemsProps {
-  chats?: Chat[]
+  images?: Image[]
 }
 
-export function SidebarItems({ chats }: SidebarItemsProps) {
-  if (!chats?.length) return null
+export function SidebarItems({ images }: SidebarItemsProps) {
+  if (!images?.length) return null
 
   return (
     <AnimatePresence>
-      {chats.map(
-        (chat, index) =>
-          chat && (
+      {images.map(
+        (image, index) =>
+          image && (
             <motion.div
-              key={chat?.id}
+              key={image?.id}
               exit={{
                 opacity: 0,
                 height: 0
               }}
             >
-              <SidebarItem index={index} chat={chat}>
+              <SidebarItem index={index} image={image}>
                 <SidebarActions
-                  chat={chat}
+                  image={image}
                   removeChat={removeChat}
                   shareChat={shareChat}
                 />

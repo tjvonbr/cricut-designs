@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { kv } from '@vercel/kv'
+import prisma from '@/server/prisma'
 
 import { auth } from '@clerk/nextjs/server'
 import { type Chat } from '@/lib/types'
@@ -30,6 +31,24 @@ export async function getChats(userId?: string | null) {
   }
 }
 
+export async function getImages(userId?: string | null) {
+  if (!userId) {
+    return []
+  }
+
+  try {
+    const images = await prisma.image.findMany({
+      where: {
+        userId
+      }
+    })
+
+    return images
+  } catch (error) {
+    return []
+  }
+}
+
 export async function getChat(id: string, userId: string) {
   const chat = await kv.hgetall<Chat>(`chat:${id}`)
 
@@ -38,6 +57,20 @@ export async function getChat(id: string, userId: string) {
   }
 
   return chat
+}
+
+export async function getImage(id: string, userId: string) {
+  const image = await prisma.image.findFirst({
+    where: {
+      AND: [{ id }, { userId }]
+    }
+  })
+
+  if (!image || (userId && image.userId !== userId)) {
+    return null
+  }
+
+  return image
 }
 
 export async function removeChat({ id, path }: { id: string; path: string }) {
