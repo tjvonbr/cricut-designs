@@ -4,8 +4,6 @@ import { notFound, redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 import { getChat, getMissingKeys } from '@/app/actions'
 import { Chat } from '@/components/chat'
-import { AI } from '@/lib/chat/actions'
-import { Session } from '@/lib/types'
 
 export interface ChatPageProps {
   params: {
@@ -47,13 +45,11 @@ export default async function ChatPage({ params }: ChatPageProps) {
   }
 
   return (
-    <AI initialAIState={{ chatId: chat.id, messages: chat.messages }}>
-      <Chat
-        id={chat.id}
-        userId={userId}
-        initialMessages={chat.messages}
-        missingKeys={missingKeys}
-      />
-    </AI>
+    <Chat
+      id={chat.id}
+      userId={userId}
+      initialMessages={chat.messages}
+      missingKeys={missingKeys}
+    />
   )
 }

@@ -2,11 +2,7 @@
 
 import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
-
-import { useActions, useUIState } from 'ai/rsc'
-
 import { UserMessage } from './stocks/message'
-import { type AI } from '@/lib/chat/actions'
 import { Button } from '@/components/ui/button'
 import { IconGenerate, IconPlus } from '@/components/ui/icons'
 import {
@@ -15,22 +11,20 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
-import { nanoid } from 'nanoid'
 import { useRouter } from 'next/navigation'
 
 export function PromptForm({
   input,
-  setInput
+  setInput,
+  generateImage
 }: {
   input: string
   setInput: (value: string) => void
+  generateImage: () => void
 }) {
   const router = useRouter()
   const { formRef, onKeyDown } = useEnterSubmit()
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
-  const [_, setMessages] = useUIState<typeof AI>()
-
-  const { submitImagePrompt } = useActions()
 
   React.useEffect(() => {
     if (inputRef.current) {
@@ -54,18 +48,10 @@ export function PromptForm({
         if (!value) return
 
         // Optimistically add user message UI
-        setMessages(currentMessages => [
-          ...currentMessages,
-          {
-            id: nanoid(),
-            display: <UserMessage>{value}</UserMessage>
-          }
-        ])
 
         // Submit and get response message
-        const responseMessage = await submitImagePrompt(value)
-        console.log(responseMessage)
         // setMessages(currentMessages => [...currentMessages, responseMessage])
+        await generateImage()
       }}
     >
       <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
