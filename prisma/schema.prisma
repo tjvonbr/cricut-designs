@@ -27,6 +27,8 @@ model Image {
   id          String    @id @default(uuid())
   prompt      String
   url         String
+  path        String
+  sharePath   String
   userId      String
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   

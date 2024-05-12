@@ -23,15 +23,16 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip'
+import { Image } from '@prisma/client'
 
 interface SidebarActionsProps {
-  chat: Chat
+  image: Image
   removeChat: (args: { id: string; path: string }) => ServerActionResult<void>
   shareChat: (id: string) => ServerActionResult<Chat>
 }
 
 export function SidebarActions({
-  chat,
+  image,
   removeChat,
   shareChat
 }: SidebarActionsProps) {
@@ -72,7 +73,7 @@ export function SidebarActions({
         </Tooltip>
       </div>
       <ChatShareDialog
-        chat={chat}
+        image={image}
         shareChat={shareChat}
         open={shareDialogOpen}
         onOpenChange={setShareDialogOpen}
@@ -98,8 +99,8 @@ export function SidebarActions({
                 // @ts-ignore
                 startRemoveTransition(async () => {
                   const result = await removeChat({
-                    id: chat.id,
-                    path: chat.path
+                    id: image.id,
+                    path: ''
                   })
 
                   if (result && 'error' in result) {

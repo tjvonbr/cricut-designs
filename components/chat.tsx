@@ -13,7 +13,8 @@ export interface ChatProps extends React.ComponentProps<'div'> {
   missingKeys: string[]
 }
 
-export function Chat({ id, className, userId, missingKeys }: ChatProps) {
+export function Chat({ className, missingKeys }: ChatProps) {
+  const [imagePrompt, setImagePrompt] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -34,8 +35,6 @@ export function Chat({ id, className, userId, missingKeys }: ChatProps) {
       })
     })
 
-    console.log(response)
-
     setIsLoading(false)
 
     if (!response.ok) {
@@ -43,7 +42,7 @@ export function Chat({ id, className, userId, missingKeys }: ChatProps) {
     }
 
     const json = await response.json()
-    console.log(json)
+    setImageUrl(json.url)
   }
 
   return (

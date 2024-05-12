@@ -17,21 +17,25 @@ import {
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 import { type Chat } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import { Image } from '@prisma/client'
 
 interface SidebarItemProps {
   index: number
-  chat: Chat
+  image: Image
   children: React.ReactNode
 }
 
-export function SidebarItem({ index, chat, children }: SidebarItemProps) {
+export function SidebarItem({ index, image, children }: SidebarItemProps) {
   const pathname = usePathname()
+  console.log('PATHNAME: ', pathname)
 
-  const isActive = pathname === chat.path
+  const isActive = pathname === image.path
   const [newChatId, setNewChatId] = useLocalStorage('newChatId', null)
   const shouldAnimate = index === 0 && isActive && newChatId
 
-  if (!chat?.id) return null
+  if (!image?.id) return null
+
+  console.log(image)
 
   return (
     <motion.div
@@ -54,7 +58,7 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
       }}
     >
       <div className="absolute left-2 top-1 flex size-6 items-center justify-center">
-        {chat.sharePath ? (
+        {image.sharePath ? (
           <Tooltip delayDuration={1000}>
             <TooltipTrigger
               tabIndex={-1}
@@ -69,7 +73,7 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
         )}
       </div>
       <Link
-        href={chat.path}
+        href={image.path}
         className={cn(
           buttonVariants({ variant: 'ghost' }),
           'group w-full px-8 transition-colors hover:bg-zinc-200/40 dark:hover:bg-zinc-300/10',
@@ -78,11 +82,11 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
       >
         <div
           className="relative max-h-5 flex-1 select-none overflow-hidden text-ellipsis break-all"
-          title={chat.title}
+          title={image.prompt}
         >
           <span className="whitespace-nowrap">
             {shouldAnimate ? (
-              chat.title.split('').map((character, index) => (
+              image.prompt.split('').map((character, index) => (
                 <motion.span
                   key={index}
                   variants={{
@@ -104,7 +108,7 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
                     staggerChildren: 0.05
                   }}
                   onAnimationComplete={() => {
-                    if (index === chat.title.length - 1) {
+                    if (index === image.prompt.length - 1) {
                       setNewChatId(null)
                     }
                   }}
@@ -113,7 +117,7 @@ export function SidebarItem({ index, chat, children }: SidebarItemProps) {
                 </motion.span>
               ))
             ) : (
-              <span>{chat.title}</span>
+              <span>{image.prompt}</span>
             )}
           </span>
         </div>
