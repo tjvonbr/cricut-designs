@@ -1,13 +1,10 @@
 'use client'
 
-import { cn, sleep } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { ChatPanel } from '@/components/chat-panel'
 import { EmptyScreen } from '@/components/empty-screen'
 import { useEffect, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
-import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
 import { toast } from 'sonner'
-import { spinner } from './stocks'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: any[]
@@ -68,7 +65,7 @@ export function Chat({ id, className, userId, missingKeys }: ChatProps) {
 function LoadingBlock() {
   return (
     <div className="w-[200px] rounded-md bg-muted text-black text-semibold">
-      Loading... {spinner}
+      Loading...
     </div>
   )
 }

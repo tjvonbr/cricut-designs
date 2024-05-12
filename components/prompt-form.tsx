@@ -2,7 +2,6 @@
 
 import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
-import { UserMessage } from './stocks/message'
 import { Button } from '@/components/ui/button'
 import { IconGenerate, IconPlus } from '@/components/ui/icons'
 import {
