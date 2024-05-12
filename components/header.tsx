@@ -1,24 +1,23 @@
 import * as React from 'react'
 import Link from 'next/link'
 
-import { auth } from '@/auth'
+import { auth } from '@clerk/nextjs/server'
 import { Button } from '@/components/ui/button'
 import { IconLogo, IconNextChat } from '@/components/ui/icons'
-import { UserMenu } from '@/components/user-menu'
 import { SidebarMobile } from './sidebar-mobile'
 import { SidebarToggle } from './sidebar-toggle'
 import { ChatHistory } from './chat-history'
-import { Session } from '@/lib/types'
+import { UserButton } from '@clerk/nextjs'
 
 async function UserOrLogin() {
-  const session = (await auth()) as Session
+  const { userId } = auth()
 
   return (
     <div className="w-full flex justify-between items-center">
-      {session?.user ? (
+      {userId ? (
         <>
           <SidebarMobile>
-            <ChatHistory userId={session.user.id} />
+            <ChatHistory userId={userId} />
           </SidebarMobile>
           <SidebarToggle />
         </>
@@ -29,8 +28,8 @@ async function UserOrLogin() {
         </Link>
       )}
       <div className="flex items-center">
-        {session?.user ? (
-          <UserMenu user={session.user} />
+        {userId ? (
+          <UserButton />
         ) : (
           <Button variant="link" asChild className="-ml-2">
             <Link href="/sign-in">Login</Link>

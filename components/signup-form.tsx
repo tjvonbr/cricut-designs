@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormState } from 'react-dom'
-import { signup } from '@/app/sign-up/actions'
+import { signup } from '@/app/sign-up/[[...sign-up]]/actions'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 import { cn, getMessageFromCode } from '@/lib/utils'
