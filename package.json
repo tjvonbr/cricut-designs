@@ -6,6 +6,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
+    "postinstall": "prisma generate",
     "preview": "next build && next start",
     "seed": "node -r dotenv/config ./scripts/seed.mjs",
     "type-check": "tsc --noEmit",
