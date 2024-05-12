@@ -27,15 +27,12 @@ interface SidebarItemProps {
 
 export function SidebarItem({ index, image, children }: SidebarItemProps) {
   const pathname = usePathname()
-  console.log('PATHNAME: ', pathname)
 
   const isActive = pathname === image.path
   const [newChatId, setNewChatId] = useLocalStorage('newChatId', null)
   const shouldAnimate = index === 0 && isActive && newChatId
 
   if (!image?.id) return null
-
-  console.log(image)
 
   return (
     <motion.div
