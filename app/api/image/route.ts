@@ -55,7 +55,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
       data: {
         id,
         prompt: body.prompt,
-        url: 'hello',
+        url: `https://cricut-designs.s3.us-east-2.amazonaws.com/${userId}:${id}`,
         path: `/image/${id}`,
         sharePath: `/share/${id}`,
         userId: userId
