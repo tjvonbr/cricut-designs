@@ -3,6 +3,8 @@ import { nanoid } from 'ai'
 import { NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/server/prisma'
+import { PutObjectCommand } from '@aws-sdk/client-s3'
+import { s3 } from '@/server/s3'
 const DALL_E = 'https://api.openai.com/v1/images/generations'
 
 export async function POST(req: NextRequest, res: NextApiResponse) {
@@ -29,18 +31,31 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
         prompt: body.prompt,
         n: 1,
         size: '1024x1024',
-        response_format: 'url'
+        response_format: 'b64_json'
       })
     })
 
     const json = await response.json()
 
     const id = nanoid()
+    const buffer = Buffer.from(json.data[0].b64_json, 'base64')
+    const params = {
+      Bucket: 'cricut-designs',
+      Key: `${userId}:${id}`,
+      Body: buffer,
+      ContentType: 'image/jpeg'
+    }
+
+    const command = new PutObjectCommand(params)
+    const s3obj = await s3.send(command)
+
+    console.log(s3obj)
+
     const newImage = await prisma.image.create({
       data: {
         id,
         prompt: body.prompt,
-        url: json.data[0].url,
+        url: `https://cricut-designs.s3.us-east-2.amazonaws.com/${userId}:${id}`,
         path: `/image/${id}`,
         sharePath: `/share/${id}`,
         userId: userId
